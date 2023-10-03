@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home page</title>
+    <link href="static/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+  <header>
+    <form action="/home" method="POST">
+    Sort by
+    <SELECT name="sort_by">
+    <OPTION value=title_asc>title ascending</option>
+    <OPTION value=title_desc>title descending</option>
+    <OPTION value=author_asc>author ascending</option>
+    <OPTION value=author_desc>author descending</option>
+    </SELECT>
+    <input type="submit" value="Sort now">
+
+    <form action="/home" method="POST">
+    <input type="text" id="search_for" name="search_for" placeholder="Search...">
+    <input type="submit" value="Search now">
+  </header>
+  <div class="main-box">
+    {% if message == "Not found" %}
+    <p>Not found!</p>
+    {% endif %}
+    {% for book in books %}
+
+    <div class="book-box">
+      <img src=https://covers.openlibrary.org/b/isbn/{{book.isbn}}-M.jpg alt="book cover"  height="60%">
+      <h2>{{ book.title }}</h2>
+      <h4>
+      {% for author in authors %}
+      {% if book.author_id == author.author_id %}
+      {{ author.author_name }}
+        <form action="/book/{{ book.book_id }}/delete" method="POST">
+          <button type="submit" class="delete_button">Delete this book</button></form>
+      {% endif %}
+      {% endfor %}
+      </h4>
+    </div>
+    {% endfor %}
+  </div>
+  </body>
+</html>
